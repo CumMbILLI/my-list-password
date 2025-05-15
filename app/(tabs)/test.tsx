@@ -48,7 +48,7 @@ export default function TestComponent() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="flex-1 px-4 my-8">
+      <SafeAreaView className="flex-1 px-4 my-8 bg-[#151718]">
         <View className="flex-1 gap-4 px-2">
           <Text className="text-3xl text-gray-400 font-bold">
             Перевірте ваш пароль!
