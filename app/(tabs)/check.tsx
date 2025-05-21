@@ -3,14 +3,15 @@ import {
   Alert,
   Button,
   Keyboard,
+  StyleSheet,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import SHA1 from "crypto-js/sha1";
+import { StyledInput } from "@/components/ui/StyledInput";
 
 export default function TestComponent() {
   const [password, setPassword] = useState<string>("");
@@ -33,10 +34,6 @@ export default function TestComponent() {
       return dataSuffix === suffix;
     });
 
-    console.log(dataLines);
-
-    console.log("SUffix: " + suffix);
-
     if (match) {
       const [, count] = match.split(":");
 
@@ -48,28 +45,55 @@ export default function TestComponent() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="flex-1 px-4 my-8 bg-[#151718]">
-        <View className="flex-1 gap-4 px-2">
-          <Text className="text-3xl text-gray-400 font-bold">
-            Перевірте ваш пароль!
-          </Text>
-          <Text className="text-lg text-gray-600">
-            Перевірте чи знаходиться ваш пароль в базі даних хакерів. Напишіть
+      <SafeAreaView style={style.safeContainer}>
+        <View style={style.container}>
+          <Text style={style.title}>Перевірте ваш пароль!</Text>
+          <Text style={style.text}>
+            Перевірте, чи знаходиться ваш пароль в базі даних хакерів. Напишіть
             пароль та натисніть кнопку відправити!
           </Text>
 
-          <TextInput
+          <StyledInput
             value={password}
-            onChangeText={setPassword}
+            setValue={setPassword}
             placeholder="Ваш пароль...."
-            className="py-5 border-gray-400 border pl-4 rounded-md text-gray-200 my-6 focus:border-gray-100"
+            //className="py-5 border-gray-400 border pl-4 rounded-md text-gray-200 my-6 focus:border-gray-100"
           />
 
-          <View className="bg-blue-500 rounded-md active:bg-blue-700">
-            <Button onPress={request} title="Перевірити" color="#fff" />
-          </View>
+          <Button onPress={request} title="Перевірити" />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 }
+
+const style = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+    marginVertical: 32,
+  },
+  container: {
+    flex: 1,
+    gap: 16,
+    paddingHorizontal: 8,
+  },
+  title: {
+    fontSize: 30,
+    color: "#9ca3af",
+    fontWeight: 900,
+  },
+  text: {
+    fontSize: 18,
+    color: "#4b5563",
+  },
+  input: {
+    marginHorizontal: 24,
+    paddingVertical: 20,
+    paddingLeft: 16,
+    borderColor: "#9ca3af",
+    borderWidth: 1,
+    borderRadius: 6,
+    color: "#e5e7eb",
+  },
+});
