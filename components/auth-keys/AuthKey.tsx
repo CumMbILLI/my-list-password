@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from "react-native";
 import * as Haptics from "expo-haptics";
+import { LEN_PASSWORD } from "@/constants/Auth";
 
 interface Props {
   symbol: string;
@@ -25,7 +26,8 @@ export const AuthKey = ({
 }: Props) => {
   const handlePressNumber = (num: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    if (password.length < 6) {
+
+    if (password.length < LEN_PASSWORD) {
       setPassword((prev) => prev + num);
     }
   };

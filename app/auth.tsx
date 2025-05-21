@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { AuthKeyList } from "@/components/auth-keys/AuthKeyList";
+import { AuthField } from "@/components/auth-field/AuthField";
 
 const AuthScreen = () => {
   const [password, setPassword] = useState("");
@@ -8,7 +9,7 @@ const AuthScreen = () => {
   const renderPasswordDots = () => {
     return (
       <View style={styles.dotsContainer}>
-        {Array(6)
+        {Array(4)
           .fill(null)
           .map((_, idx) => (
             <View
@@ -26,7 +27,7 @@ const AuthScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Введите пароль</Text>
-      {renderPasswordDots()}
+      <AuthField password={password} />
       <AuthKeyList password={password} setPassword={setPassword} />
     </View>
   );
