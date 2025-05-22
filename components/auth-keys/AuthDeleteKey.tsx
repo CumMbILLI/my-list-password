@@ -4,7 +4,6 @@ import { StyleProp, TouchableOpacity, ViewStyle } from "react-native";
 import * as Haptics from "expo-haptics";
 
 interface Props {
-  key: string;
   style: StyleProp<ViewStyle>;
   setPassword: Dispatch<React.SetStateAction<string>>;
 }
