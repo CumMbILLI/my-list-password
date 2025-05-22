@@ -7,13 +7,17 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
 import * as SecureStore from "expo-secure-store";
+import { useAuthStore } from "@/store/auth";
 
 export default function TabLayout() {
+  const isAuth = useAuthStore((state) => state.isAuth);
   const isRegister = SecureStore.getItem("MYDIPLOM_PSWD");
 
   const colorScheme = useColorScheme();
 
   if (!isRegister) return <Redirect href="/(auth)/register" />;
+
+  if (!isAuth) return <Redirect href="/(auth)/login" />;
 
   return (
     <Tabs
@@ -57,7 +61,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen name="auth" />
     </Tabs>
   );
 }

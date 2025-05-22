@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { handleResiterApp } from "@/lib/register";
 import { LEN_PASSWORD } from "@/constants/Auth";
+import { useAuthStore } from "@/store/auth";
 
 export default function RegisterPage() {
+  const setAuth = useAuthStore((state) => state.setAuth);
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -24,6 +27,7 @@ export default function RegisterPage() {
       return;
     }
 
+    setAuth(true);
     router.push("/(tabs)");
   }, [password, confirmPassword]);
 
