@@ -1,24 +1,15 @@
 import { LEN_PASSWORD } from "@/constants/Auth";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import * as Haptics from "expo-haptics";
+import { StyleSheet, Text, View } from "react-native";
 
 interface Props {
+  title?: string;
   password: string;
 }
 
-export const AuthField = ({ password }: Props) => {
-  const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-
-  const toggleShowingPassword = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-
-    setIsShowPassword((prev) => !prev);
-  };
-
-  const renderPasswordDots = () => {
-    return (
+export const AuthField = ({ title = "Введіть пароль", password }: Props) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.dotsContainer}>
         {Array(LEN_PASSWORD)
           .fill(null)
@@ -32,22 +23,6 @@ export const AuthField = ({ password }: Props) => {
             />
           ))}
       </View>
-    );
-  };
-
-  return (
-    <View style={styles.container}>
-      {renderPasswordDots()}
-      <TouchableOpacity
-        style={{ position: "absolute", top: 0, right: 40 }}
-        onPress={toggleShowingPassword}
-      >
-        <Ionicons
-          name={isShowPassword ? "eye" : "eye-off"}
-          color="#fff"
-          size={24}
-        />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -56,18 +31,28 @@ const styles = StyleSheet.create({
   container: {
     width: "80%",
     justifyContent: "center",
-    position: "relative",
-    flexDirection: "row",
+    alignItems: "center",
   },
   dotsContainer: {
     flexDirection: "row",
     gap: 10,
     marginBottom: 40,
+    paddingVertical: 20,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "grey",
   },
   dot: {
     width: 14,
     height: 14,
     borderRadius: 7,
     backgroundColor: "#555",
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 24,
+    fontWeight: "bold",
+    color: "#fff",
   },
 });

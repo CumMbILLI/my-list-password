@@ -1,18 +1,19 @@
 import { Redirect, Tabs } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Colors } from "@/constants/Colors";
+import * as SecureStore from "expo-secure-store";
 
 export default function TabLayout() {
-  const isAuth = false;
+  const isRegister = SecureStore.getItem("MYDIPLOM_PSWD");
 
   const colorScheme = useColorScheme();
 
-  if (!isAuth) return <Redirect href="/auth" />;
+  if (!isRegister) return <Redirect href="/(auth)/register" />;
 
   return (
     <Tabs

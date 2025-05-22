@@ -4,11 +4,10 @@ import * as Haptics from "expo-haptics";
 import * as LocalAuth from "expo-local-authentication";
 
 interface Props {
-  key: string;
   style: StyleProp<ViewStyle>;
 }
 
-export const AuthBiometricKey = ({ key, style }: Props) => {
+export const AuthBiometricKey = ({ style }: Props) => {
   const handleBiometricPress = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
@@ -39,7 +38,7 @@ export const AuthBiometricKey = ({ key, style }: Props) => {
   };
 
   return (
-    <TouchableOpacity key={key} style={style} onPress={handleBiometricPress}>
+    <TouchableOpacity style={style} onPress={handleBiometricPress}>
       <Ionicons name="finger-print" size={28} color="#ccc" />
     </TouchableOpacity>
   );
