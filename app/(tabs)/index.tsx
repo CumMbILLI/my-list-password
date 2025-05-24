@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
@@ -21,33 +21,32 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView>
-      <Text className="text-white">HomePage</Text>
-      <Button
-        title="Видалити пароль"
-        color="red"
-        onPress={hadnleRemovePassword}
-      />
-      <Button title="Вихід" onPress={handleExit} />
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>HomePage</Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Видалити пароль"
+          color="red"
+          onPress={hadnleRemovePassword}
+        />
+        <Button title="Вихід" onPress={handleExit} />
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
+  container: {
     alignItems: "center",
-    gap: 8,
+    marginTop: 40,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  title: {
+    fontSize: 24,
+    fontWeight: 700,
+    color: "white",
+    marginBottom: 20,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  buttonContainer: {
+    gap: 10,
   },
 });

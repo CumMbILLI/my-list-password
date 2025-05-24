@@ -24,19 +24,16 @@ export const AuthKey = ({
   password,
   setPassword,
 }: Props) => {
-  const handlePressNumber = (num: string) => {
+  const handlePressNumber = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     if (password.length < LEN_PASSWORD) {
-      setPassword((prev) => prev + num);
+      setPassword((prev) => prev + symbol);
     }
   };
 
   return (
-    <TouchableOpacity
-      style={keyStyle}
-      onPress={() => handlePressNumber(symbol)}
-    >
+    <TouchableOpacity style={keyStyle} onPress={handlePressNumber}>
       <Text style={textStyle}>{symbol}</Text>
     </TouchableOpacity>
   );

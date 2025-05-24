@@ -6,11 +6,10 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native";
-import * as Haptics from "expo-haptics";
-import * as LocalAuth from "expo-local-authentication";
 import { useAuthStore } from "@/store/auth";
 import { Toast } from "toastify-react-native";
 import { useRouter } from "expo-router";
+import { biometricPress } from "@/lib/biometric";
 
 interface Props {
   style: StyleProp<ViewStyle>;
@@ -22,32 +21,9 @@ export const AuthBiometricKey = ({ style }: Props) => {
   const router = useRouter();
 
   const handleBiometricPress = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const isSuccessBiometric = await biometricPress();
 
-    const isAvaibleBiometricAuth = await LocalAuth.hasHardwareAsync();
-
-    let supportBiometricAuth;
-    if (isAvaibleBiometricAuth) {
-      supportBiometricAuth =
-        await LocalAuth.supportedAuthenticationTypesAsync();
-    }
-
-    if (!supportBiometricAuth) {
-      return Alert.alert("Недоступна биометрическая автроризация!");
-    }
-
-    const savedBiometric = await LocalAuth.isEnrolledAsync();
-    if (!savedBiometric) {
-      return Alert.alert("Нет сохраненных биометрических данных!");
-    }
-
-    const biometricAuth = await LocalAuth.authenticateAsync({
-      promptMessage: "Login",
-      cancelLabel: "Cancel",
-      disableDeviceFallback: true,
-    });
-
-    if (biometricAuth.success) {
+    if (isSuccessBiometric) {
       setAuth(true);
 
       return router.push("/(tabs)");

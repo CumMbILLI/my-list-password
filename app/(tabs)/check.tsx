@@ -14,10 +14,17 @@ import SHA1 from "crypto-js/sha1";
 import { StyledInput } from "@/components/ui/StyledInput";
 
 export default function TestComponent() {
-  const [password, setPassword] = useState<string>("");
+  const [checkPassword, setCheckPassword] = useState<string>("");
 
   const request = async () => {
-    const hash = SHA1(password).toString().toUpperCase();
+    if (checkPassword.length <= 0) {
+      return Alert.alert(
+        "Помилка!",
+        "Ви не ввели пароль для перевірки. Будь-ласка скористайтесь полем на сторінці."
+      );
+    }
+
+    const hash = SHA1(checkPassword).toString().toUpperCase();
     const prefix = hash.slice(0, 5);
     const suffix = hash.slice(5);
 
@@ -37,10 +44,13 @@ export default function TestComponent() {
     if (match) {
       const [, count] = match.split(":");
 
-      return Alert.alert(`Ваш пароль зламано ${count}`);
+      return Alert.alert(
+        "Увага!",
+        `Ваш пароль було злито ${count} разів. Рекомендуємо замінити його`
+      );
     }
 
-    return Alert.alert("Ваш пароль не зламано ;)");
+    return Alert.alert("Вітаємо!", "Ваш пароль не було злито ;)");
   };
 
   return (
@@ -54,10 +64,9 @@ export default function TestComponent() {
           </Text>
 
           <StyledInput
-            value={password}
-            setValue={setPassword}
+            value={checkPassword}
+            setValue={setCheckPassword}
             placeholder="Ваш пароль...."
-            //className="py-5 border-gray-400 border pl-4 rounded-md text-gray-200 my-6 focus:border-gray-100"
           />
 
           <Button onPress={request} title="Перевірити" />

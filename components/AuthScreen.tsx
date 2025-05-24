@@ -18,9 +18,7 @@ export function AuthScreen({
 }: Props) {
   return (
     <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
+      <Text style={styles.title}>{title}</Text>
 
       <AuthField password={password} title={titlePasswordField} />
       <AuthKeyList password={password} setPassword={setPassword} />
@@ -35,16 +33,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#121212",
   },
-  textContainer: {
-    width: "100%",
-    marginBottom: 20,
-    paddingLeft: "12%",
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "grey",
-  },
+
   title: {
     fontSize: 30,
+    marginVertical: 40,
     fontWeight: "bold",
     textAlign: "left",
     color: "#fff",

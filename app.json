@@ -9,7 +9,10 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app users Face ID and Touch ID to verify the user's identity and protect sensitive  data"
+      }
     },
     "android": {
       "adaptiveIcon": {
