@@ -21,7 +21,7 @@ export default function LoginScreen() {
       if (hashPassword === hashStorePassword) {
         setAuth(true);
 
-        return router.push("/(tabs)");
+        return router.replace("/(tabs)");
       }
 
       Toast.show({

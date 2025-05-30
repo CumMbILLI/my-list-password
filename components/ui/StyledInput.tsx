@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, TextInputProps } from "react-native";
 
-interface Props extends TextInputProps {
+export interface StyledInputProps extends TextInputProps {
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }
-
-//className="py-5 border-gray-400 border pl-4 rounded-md text-gray-200 my-6 focus:border-gray-100"
 
 const primary = "#9ca3af";
 const secondary = "#f3f4f6";
@@ -14,10 +12,12 @@ const secondary = "#f3f4f6";
 export function StyledInput({
   value,
   setValue,
+  style,
   placeholder,
   onFocus,
   onBlur,
-}: Props) {
+  secureTextEntry,
+}: StyledInputProps) {
   const [borderColor, setBorderColor] = useState(primary);
 
   const customOnFocus = () => {
@@ -35,14 +35,15 @@ export function StyledInput({
       value={value}
       onChangeText={setValue}
       placeholder={placeholder}
-      style={[style.input, { borderColor }]}
+      secureTextEntry={secureTextEntry}
+      style={[styles.input, style, { borderColor }]}
       onFocus={customOnFocus}
       onBlur={customOnBlur}
     />
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   input: {
     paddingVertical: 20,
     marginVertical: 24,

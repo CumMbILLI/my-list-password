@@ -60,7 +60,7 @@ export default function TestComponent() {
           <Text style={style.title}>Перевірте ваш пароль!</Text>
           <Text style={style.text}>
             Перевірте, чи знаходиться ваш пароль в базі даних хакерів. Напишіть
-            пароль та натисніть кнопку відправити!
+            пароль та натисніть кнопку "Перевірити"!
           </Text>
 
           <StyledInput

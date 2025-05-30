@@ -6,6 +6,11 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import ToastManager from "toastify-react-native";
+import {
+  SQLiteProvider,
+  useSQLiteContext,
+  type SQLiteDatabase,
+} from "expo-sqlite";
 
 import "../global.css";
 
@@ -27,15 +32,53 @@ export default function RootLayout() {
     return null;
   }
 
+  const createDbIfNeeded = async (db: SQLiteDatabase) => {
+    await db.execAsync(
+      "CREATE TABLE IF NOT EXISTS password (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT);"
+    );
+
+    console.log("Creating db if needed");
+  };
+
   return (
     <ThemeProvider value={DarkTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <SQLiteProvider databaseName="mypassword.db" onInit={createDbIfNeeded}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(password)/[id]/index"
+            options={{
+              headerTitle: "Змінити пароль",
+              headerBackTitle: "Назад",
+            }}
+          />
+          <Stack.Screen
+            name="(password)/new/index"
+            options={{
+              headerTitle: "Новий пароль",
+              headerBackTitle: "Назад",
+            }}
+          />
+          <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(auth)/register"
+            options={{ headerShown: false }}
+          />
+          {/* <Stack.Screen
+            name="/password/[id]"
+            options={{
+              headerTitle: "Змінити пароль.",
+              headerBackTitle: "Назад",
+            }}
+          />
+          <Stack.Screen
+            name=""
+            options={{ headerTitle: "Новий пароль.", headerBackTitle: "Назад" }}
+          /> */}
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </SQLiteProvider>
+      <StatusBar style="light" />
 
       <ToastManager theme="dark" />
     </ThemeProvider>
