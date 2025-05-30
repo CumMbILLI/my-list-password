@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AuthField } from "./auth-field/AuthField";
 import { AuthKeyList } from "./auth-keys/AuthKeyList";
+import { TitltePage } from "./TitlePage";
 
 interface Props {
   title: string;
@@ -18,7 +19,7 @@ export function AuthScreen({
 }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <TitltePage>{title}</TitltePage>
 
       <AuthField password={password} title={titlePasswordField} />
       <AuthKeyList password={password} setPassword={setPassword} />
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginVertical: 40,
     fontWeight: "bold",
-    textAlign: "left",
     color: "#fff",
   },
 });

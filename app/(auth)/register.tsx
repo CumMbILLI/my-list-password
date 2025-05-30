@@ -28,7 +28,8 @@ export default function RegisterPage() {
     }
 
     setAuth(true);
-    router.push("/(tabs)");
+
+    router.replace("/(tabs)");
   }, [password, confirmPassword]);
 
   if (password.length >= 4)
