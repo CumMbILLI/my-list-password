@@ -4,15 +4,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { useAuthStore } from "@/store/auth";
+import { useSQLiteContext } from "expo-sqlite";
 
 export default function TabTwoScreen() {
   const setAuth = useAuthStore((state) => state.setAuth);
 
+  const db = useSQLiteContext();
+
   const router = useRouter();
 
-  const hadnleRemovePassword = () => {
+  const hadnleRemovePassword = async () => {
+    await db.runAsync("DELETE FROM password");
+
     SecureStore.deleteItemAsync("MYDIPLOM_PSWD");
     setAuth(false);
+
     router.replace("/(auth)/register");
   };
 
