@@ -1,7 +1,7 @@
 import { AuthScreen } from "@/components/AuthScreen";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { handleResiterApp } from "@/lib/register";
+import { handleRegisterApp } from "@/lib/register";
 import { LEN_PASSWORD } from "@/constants/Auth";
 import { useAuthStore } from "@/store/auth";
 
@@ -20,7 +20,7 @@ export default function RegisterPage() {
     )
       return;
 
-    if (!handleResiterApp(password, confirmPassword)) {
+    if (!handleRegisterApp(password, confirmPassword)) {
       setPassword("");
       setConfirmPassword("");
 

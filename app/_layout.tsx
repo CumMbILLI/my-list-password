@@ -4,14 +4,10 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import "react-native-reanimated";
 import ToastManager from "toastify-react-native";
-import {
-  SQLiteProvider,
-  useSQLiteContext,
-  type SQLiteDatabase,
-} from "expo-sqlite";
+import { SQLiteProvider, type SQLiteDatabase } from "expo-sqlite";
 
+import "react-native-reanimated";
 import "../global.css";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -34,7 +30,7 @@ export default function RootLayout() {
 
   const createDbIfNeeded = async (db: SQLiteDatabase) => {
     await db.execAsync(
-      "CREATE TABLE IF NOT EXISTS password (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT);"
+      "CREATE TABLE IF NOT EXISTS password (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, passwordLength INTEGER);"
     );
 
     console.log("Creating db if needed");
@@ -64,17 +60,6 @@ export default function RootLayout() {
             name="(auth)/register"
             options={{ headerShown: false }}
           />
-          {/* <Stack.Screen
-            name="/password/[id]"
-            options={{
-              headerTitle: "Змінити пароль.",
-              headerBackTitle: "Назад",
-            }}
-          />
-          <Stack.Screen
-            name=""
-            options={{ headerTitle: "Новий пароль.", headerBackTitle: "Назад" }}
-          /> */}
           <Stack.Screen name="+not-found" />
         </Stack>
       </SQLiteProvider>
