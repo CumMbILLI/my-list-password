@@ -2,7 +2,10 @@ import { Toast } from "toastify-react-native";
 import SHA256 from "crypto-js/sha256";
 import * as SecureStore from "expo-secure-store";
 
-export const handleResiterApp = (password: string, confirmPassword: string) => {
+export const handleRegisterApp = (
+  password: string,
+  confirmPassword: string
+) => {
   if (password !== confirmPassword) {
     Toast.show({
       type: "error",
@@ -31,7 +34,18 @@ export const handleResiterApp = (password: string, confirmPassword: string) => {
     progressBarColor: "#4CAF50",
   });
 
-  SecureStore.setItem("MYDIPLOM_PSWD", SHA256(password).toString());
+  const hashPassword = SHA256(password).toString();
+  SecureStore.setItem("MYDIPLOM_PSWD", hashPassword);
+
+  const dateNow = Date.now().toString();
+
+  const hashDate = SHA256(dateNow).toString();
+
+  const secketKey = hashDate + hashPassword;
+
+  SecureStore.setItem("MYDIPLOM_SK", secketKey);
+
+  console.log(secketKey);
 
   return true;
 };

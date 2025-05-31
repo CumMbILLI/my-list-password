@@ -1,8 +1,8 @@
-import { UserPasswords } from "@/app/(tabs)";
+import { PasswordState } from "@/interfaces/password.interface";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface Props extends UserPasswords {
+interface Props extends PasswordState {
   onPressCard: (id: number) => void;
   onPressDelete: (id: number) => void;
 }
@@ -10,7 +10,7 @@ interface Props extends UserPasswords {
 export const PasswordCard = ({
   id,
   name,
-  password,
+  passwordLength,
   onPressCard,
   onPressDelete,
 }: Props) => {
@@ -19,7 +19,9 @@ export const PasswordCard = ({
       <TouchableOpacity style={styles.card} onPress={() => onPressCard(id)}>
         <View style={styles.textContainer}>
           <Text style={styles.cardTitle}>{name}</Text>
-          <Text style={styles.cardDesciption}>Password: {password}</Text>
+          <Text style={styles.cardDesciption}>
+            {passwordLength && "Password: " + "*".repeat(passwordLength)}
+          </Text>
         </View>
 
         <MaterialIcons name="arrow-forward-ios" color="white" size={24} />

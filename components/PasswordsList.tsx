@@ -1,5 +1,3 @@
-import { UserPasswords } from "@/app/(tabs)";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import {
   Button,
@@ -7,21 +5,18 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { PasswordCard } from "./PasswordCard";
-import { useSQLiteContext } from "expo-sqlite";
+import { PasswordState } from "@/interfaces/password.interface";
 
 interface Props {
-  passwords: UserPasswords[];
+  passwords: PasswordState[];
   onPressDelete: (id: number) => void;
 }
 
 export const PasswordsList = ({ passwords, onPressDelete }: Props) => {
   const router = useRouter();
-
-  const db = useSQLiteContext();
 
   const redirectNewPassword = () => {
     router.push("/(password)/new");

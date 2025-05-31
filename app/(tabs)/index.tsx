@@ -1,31 +1,15 @@
 import { PasswordsList } from "@/components/PasswordsList";
 import { TitltePage } from "@/components/TitlePage";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Stack, useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useCallback, useEffect, useState } from "react";
-import {
-  Alert,
-  Button,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useCallback, useState } from "react";
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import NewPassword from "../(password)/new";
 import { useDbRequest } from "@/hooks/useDbRequest";
-
-export interface UserPasswords {
-  id: number;
-  name: string;
-  password: string;
-}
+import { PasswordState } from "@/interfaces/password.interface";
 
 export default function HomeScreen() {
-  const [passwords, setPasswords] = useState<UserPasswords[]>([]);
+  const [passwords, setPasswords] = useState<PasswordState[]>([]);
 
   const { getAllPasswords, deletePassword } = useDbRequest();
 
