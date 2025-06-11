@@ -6,9 +6,10 @@ import * as Haptics from "expo-haptics";
 interface Props {
   style: StyleProp<ViewStyle>;
   setPassword: Dispatch<React.SetStateAction<string>>;
+  disabled: boolean;
 }
 
-export const AuthDeleteKey = ({ style, setPassword }: Props) => {
+export const AuthDeleteKey = ({ style, setPassword, disabled }: Props) => {
   const handleDelete = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
@@ -16,7 +17,7 @@ export const AuthDeleteKey = ({ style, setPassword }: Props) => {
   };
 
   return (
-    <TouchableOpacity style={style} onPress={handleDelete}>
+    <TouchableOpacity style={style} onPress={handleDelete} disabled={disabled}>
       <Ionicons name="backspace" size={24} color="#ccc" />
     </TouchableOpacity>
   );

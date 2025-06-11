@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Keyboard,
   SafeAreaView,
@@ -8,11 +9,15 @@ import {
   View,
 } from "react-native";
 import { StyledInput } from "./ui/StyledInput";
-import { useState } from "react";
-import { useRouter } from "expo-router";
-import { Toast } from "toastify-react-native";
+import { useCallback, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
 import { PasswordInput } from "./ui/PasswordInput";
 import { useDbRequest } from "@/hooks/useDbRequest";
+import { PasswordRules, validatePassword } from "@/lib/validatePassword";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { generatePassword } from "@/lib/generatePassword";
+import { DEFAULT_CONFIG_VALIDATE_PASSWORD } from "@/constants/ConfigValidatePassword";
+import { Toast } from "toastify-react-native";
 
 interface Props {
   initialData?: {
@@ -31,42 +36,79 @@ export const PasswordForm = ({ initialData = defaultInitialData }: Props) => {
   const passwordId = initialData.id;
   const [name, setName] = useState(initialData.name);
   const [password, setPassword] = useState(initialData.password);
+  const [validPasswordErrors, setValidPasswordErrors] = useState<string[]>([]);
+  const [configValidPassword, setConfigValidPassword] = useState<
+    PasswordRules | undefined
+  >();
 
   const { createPassword, updatePassword } = useDbRequest();
 
   const router = useRouter();
 
-  const handlePasswordSave = async () => {
-    try {
-      if (passwordId) {
-        updatePassword(name, password, passwordId);
+  const loadConfigValidatePassword = async () => {
+    const configValidatePassword = await AsyncStorage.getItem("validateConfig");
 
-        Toast.show({
-          text1: "Успішно!",
-          text2: "Пароль успішно змінено",
-          type: "success",
-        });
-      } else {
-        createPassword(name, password);
+    if (configValidatePassword) {
+      const config = JSON.parse(configValidatePassword) as PasswordRules;
 
-        Toast.show({
-          text1: "Успішно!",
-          text2: "Пароль успішно збережено",
-          type: "success",
-        });
-      }
+      setConfigValidPassword(config);
+    }
+  };
 
-      return router.back();
-    } catch (error) {
-      console.log(error);
-
+  const handlePasswordSave = () => {
+    if (!name) {
       return Toast.show({
-        text1: "Помилка",
-        text2: "Виникла помилка при збереженні паролю!",
+        text1: "Помилка!",
+        text2: "Ви не ввели назву пароля",
         type: "error",
       });
     }
+
+    const isValidPassword = validatePassword(password, configValidPassword);
+
+    if (!isValidPassword.isValid) {
+      setValidPasswordErrors(isValidPassword.errors);
+
+      return;
+    }
+
+    if (passwordId) {
+      Alert.alert("Увага!", "Ви дійсно хочете змінити пароль?", [
+        {
+          text: "Підтвердити",
+          onPress: () => {
+            updatePassword(name, password, passwordId);
+
+            router.back();
+          },
+        },
+        {
+          text: "Cкасувати",
+          style: "cancel",
+        },
+      ]);
+    } else {
+      createPassword(name, password);
+
+      router.back();
+    }
+
+    setValidPasswordErrors([]);
   };
+
+  const handleGeneratePassword = () => {
+    const newGeneratePassword = generatePassword(
+      configValidPassword || DEFAULT_CONFIG_VALIDATE_PASSWORD
+    );
+
+    setPassword(newGeneratePassword);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadConfigValidatePassword();
+    }, [])
+  );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -75,9 +117,28 @@ export const PasswordForm = ({ initialData = defaultInitialData }: Props) => {
           <Text style={styles.text}>Назва</Text>
           <StyledInput value={name} setValue={setName} />
 
-          <Text style={styles.text}>Пароль</Text>
+          <Text
+            style={[
+              styles.text,
+              validPasswordErrors.length > 0 && { color: "red" },
+            ]}
+          >
+            Пароль
+          </Text>
           <PasswordInput value={password} setValue={setPassword} />
         </View>
+
+        {validPasswordErrors.length > 0 && (
+          <View style={{ gap: 10 }}>
+            {validPasswordErrors.map((item, index) => (
+              <Text key={index} style={{ color: "red", marginHorizontal: 5 }}>
+                {item}
+              </Text>
+            ))}
+          </View>
+        )}
+
+        <Button title="Згенерувати пароль" onPress={handleGeneratePassword} />
 
         <View style={styles.buttonContainer}>
           <Button title="Відмінити" onPress={() => router.back()} color="red" />
@@ -99,6 +160,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: "space-between",
     flexDirection: "row",
+    marginTop: 10,
     gap: 20,
   },
   text: {

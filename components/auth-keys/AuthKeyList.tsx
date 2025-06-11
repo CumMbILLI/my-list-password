@@ -4,33 +4,26 @@ import { AuthDeleteKey } from "./AuthDeleteKey";
 import { AuthKey } from "./AuthKey";
 import { Dispatch, SetStateAction } from "react";
 import React from "react";
-
-const KEYS = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "biometric",
-  "0",
-  "del",
-];
+import { KEYS } from "@/constants/Auth";
 
 interface Props {
   password: string;
   setPassword: Dispatch<SetStateAction<string>>;
+  disabled: boolean;
 }
 
-export function AuthKeyList({ password, setPassword }: Props) {
+export function AuthKeyList({ password, setPassword, disabled }: Props) {
   return (
     <View style={styles.keyboard}>
       {KEYS.map((key) => {
         if (key === "biometric") {
-          return <AuthBiometricKey key={key} style={styles.key} />;
+          return (
+            <AuthBiometricKey
+              key={key}
+              style={styles.key}
+              disabled={disabled}
+            />
+          );
         }
 
         if (key === "del") {
@@ -39,6 +32,7 @@ export function AuthKeyList({ password, setPassword }: Props) {
               key={key}
               style={styles.key}
               setPassword={setPassword}
+              disabled={disabled}
             />
           );
         }
@@ -51,6 +45,7 @@ export function AuthKeyList({ password, setPassword }: Props) {
             setPassword={setPassword}
             keyStyle={styles.key}
             textStyle={styles.keyText}
+            disabled={disabled}
           />
         );
       })}

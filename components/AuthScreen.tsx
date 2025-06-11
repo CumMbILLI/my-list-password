@@ -7,6 +7,7 @@ import { TitltePage } from "./TitlePage";
 interface Props {
   title: string;
   titlePasswordField?: string;
+  disabled: boolean;
   password: string;
   setPassword: Dispatch<SetStateAction<string>>;
 }
@@ -14,6 +15,7 @@ interface Props {
 export function AuthScreen({
   title,
   titlePasswordField,
+  disabled,
   password,
   setPassword,
 }: Props) {
@@ -22,7 +24,11 @@ export function AuthScreen({
       <TitltePage>{title}</TitltePage>
 
       <AuthField password={password} title={titlePasswordField} />
-      <AuthKeyList password={password} setPassword={setPassword} />
+      <AuthKeyList
+        password={password}
+        setPassword={setPassword}
+        disabled={disabled}
+      />
     </View>
   );
 }
