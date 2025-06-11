@@ -14,10 +14,11 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { PasswordInput } from "./ui/PasswordInput";
 import { useDbRequest } from "@/hooks/useDbRequest";
 import { PasswordRules, validatePassword } from "@/lib/validatePassword";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { generatePassword } from "@/lib/generatePassword";
 import { DEFAULT_CONFIG_VALIDATE_PASSWORD } from "@/constants/ConfigValidatePassword";
 import { Toast } from "toastify-react-native";
+
+import * as SecureStore from "expo-secure-store";
 
 interface Props {
   initialData?: {
@@ -45,8 +46,8 @@ export const PasswordForm = ({ initialData = defaultInitialData }: Props) => {
 
   const router = useRouter();
 
-  const loadConfigValidatePassword = async () => {
-    const configValidatePassword = await AsyncStorage.getItem("validateConfig");
+  const loadConfigValidatePassword = () => {
+    const configValidatePassword = SecureStore.getItem("ValidateConfig");
 
     if (configValidatePassword) {
       const config = JSON.parse(configValidatePassword) as PasswordRules;

@@ -21,6 +21,7 @@ export default function TabTwoScreen() {
 
     SecureStore.deleteItemAsync("MYDIPLOM_PSWD");
     SecureStore.deleteItemAsync("MYDIPLOM_SK");
+    SecureStore.deleteItemAsync("ValidateConfig");
 
     setAuth(false);
 

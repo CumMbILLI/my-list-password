@@ -13,11 +13,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { PasswordRules } from "@/lib/validatePassword";
 import { useFocusEffect } from "expo-router";
 import { DEFAULT_CONFIG_VALIDATE_PASSWORD } from "@/constants/ConfigValidatePassword";
 import { Toast } from "toastify-react-native";
+import * as SecureStore from "expo-secure-store";
 
 export default function PasswordStrength() {
   const [requireUppercase, setRequireUppercase] = useState<
@@ -33,8 +33,8 @@ export default function PasswordStrength() {
 
   const [passwordLength, setPasswordLength] = useState<string>("");
 
-  const loadConfigValidatePassword = async () => {
-    const configValidatePassword = await AsyncStorage.getItem("validateConfig");
+  const loadConfigValidatePassword = () => {
+    const configValidatePassword = SecureStore.getItem("ValidateConfig");
 
     let config;
 
@@ -82,7 +82,7 @@ export default function PasswordStrength() {
     };
 
     try {
-      await AsyncStorage.setItem("validateConfig", JSON.stringify(data));
+      SecureStore.setItem("ValidateConfig", JSON.stringify(data));
 
       Alert.alert("Успішно!");
     } catch (error) {
