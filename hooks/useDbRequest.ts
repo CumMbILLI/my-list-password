@@ -5,6 +5,8 @@ import { PasswordState } from "@/interfaces/password.interface";
 import { showErrorSecretKeyEmpty } from "@/utils/showErrorSecretKeyEmpty";
 import { Toast } from "toastify-react-native";
 
+const STORE_SK_KEY = process.env.EXPO_EXPO_SECRET_KEY as string;
+
 export const useDbRequest = () => {
   const db = useSQLiteContext();
 
@@ -58,6 +60,12 @@ export const useDbRequest = () => {
         "UPDATE password SET name = ?, password = ?, passwordLength = ? WHERE id = ?;",
         [name, encryptPassword, password.length, id]
       );
+
+      Toast.show({
+        text1: "Успішно!",
+        text2: "Пароль успішно змінено",
+        type: "success",
+      });
     } catch (error) {
       console.error(error);
 
@@ -84,12 +92,18 @@ export const useDbRequest = () => {
         "INSERT INTO password (name, password, passwordLength) VALUES (?, ?, ?);",
         [name, encryptPassword, password.length]
       );
+
+      Toast.show({
+        text1: "Успішно!",
+        text2: "Пароль успішно збережено",
+        type: "success",
+      });
     } catch (erorr) {
       console.error(erorr);
 
       Toast.show({
         text1: "Помилка!",
-        text2: "Щось пішло не так :(\n Будь-ласка, спробуйте пізніше.",
+        text2: "Щось пішло не так :(\nБудь-ласка, спробуйте пізніше.",
         type: "error",
       });
     }

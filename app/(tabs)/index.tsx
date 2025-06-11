@@ -1,9 +1,8 @@
 import { PasswordsList } from "@/components/PasswordsList";
 import { TitltePage } from "@/components/TitlePage";
 import { useFocusEffect } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { Alert, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDbRequest } from "@/hooks/useDbRequest";
 import { PasswordState } from "@/interfaces/password.interface";
@@ -12,8 +11,6 @@ export default function HomeScreen() {
   const [passwords, setPasswords] = useState<PasswordState[]>([]);
 
   const { getAllPasswords, deletePassword } = useDbRequest();
-
-  const db = useSQLiteContext();
 
   const loadData = async () => {
     const response = await getAllPasswords();
@@ -47,7 +44,18 @@ export default function HomeScreen() {
 
       <PasswordsList
         passwords={passwords}
-        onPressDelete={handleDeletePassword}
+        onPressDelete={(id) =>
+          Alert.alert("Увага!", "Ви дійсно хочете видалити пароль?", [
+            {
+              text: "Підтвердити",
+              onPress: () => handleDeletePassword(id),
+            },
+            {
+              text: "Cкасувати",
+              style: "cancel",
+            },
+          ])
+        }
       />
     </SafeAreaView>
   );

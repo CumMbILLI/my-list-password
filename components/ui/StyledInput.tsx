@@ -16,6 +16,7 @@ export function StyledInput({
   placeholder,
   onFocus,
   onBlur,
+  keyboardType,
   secureTextEntry,
 }: StyledInputProps) {
   const [borderColor, setBorderColor] = useState(primary);
@@ -36,6 +37,7 @@ export function StyledInput({
       onChangeText={setValue}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
+      keyboardType={keyboardType}
       style={[styles.input, style, { borderColor }]}
       onFocus={customOnFocus}
       onBlur={customOnBlur}

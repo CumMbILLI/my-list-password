@@ -15,6 +15,7 @@ interface Props {
   setPassword: Dispatch<SetStateAction<string>>;
   keyStyle: StyleProp<ViewStyle>;
   textStyle: StyleProp<TextStyle>;
+  disabled: boolean;
 }
 
 export const AuthKey = ({
@@ -23,6 +24,7 @@ export const AuthKey = ({
   textStyle,
   password,
   setPassword,
+  disabled,
 }: Props) => {
   const handlePressNumber = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -33,7 +35,11 @@ export const AuthKey = ({
   };
 
   return (
-    <TouchableOpacity style={keyStyle} onPress={handlePressNumber}>
+    <TouchableOpacity
+      style={keyStyle}
+      onPress={handlePressNumber}
+      disabled={disabled}
+    >
       <Text style={textStyle}>{symbol}</Text>
     </TouchableOpacity>
   );

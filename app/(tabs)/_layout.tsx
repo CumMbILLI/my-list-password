@@ -1,5 +1,5 @@
 import { Redirect, Tabs } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
@@ -10,10 +10,12 @@ import * as SecureStore from "expo-secure-store";
 import { useAuthStore } from "@/store/auth";
 
 export default function TabLayout() {
-  const isAuth = useAuthStore((state) => state.isAuth);
-  const isRegister = SecureStore.getItem("MYDIPLOM_PSWD");
+  const STORE_PSWD_KEY = process.env.EXPO_PASSWORD_KEY;
 
   const colorScheme = useColorScheme();
+
+  const isAuth = useAuthStore((state) => state.isAuth); // перевірка чи пройшов користувач автентифікацію
+  const isRegister = SecureStore.getItem("MYDIPLOM_PSWD"); // перевіряємо чи наявний PIN-код в сховищи
 
   if (!isRegister) return <Redirect href="/(auth)/register" />;
 
@@ -53,12 +55,18 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="settings/index"
         options={{
           title: "Setting",
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="settings" size={24} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings/strength"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
