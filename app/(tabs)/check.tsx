@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import SHA1 from "crypto-js/sha1";
 import { StyledInput } from "@/components/ui/StyledInput";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 
 export default function TestComponent() {
   const [checkPassword, setCheckPassword] = useState<string>("");
@@ -63,7 +64,7 @@ export default function TestComponent() {
             пароль та натисніть кнопку "Перевірити"!
           </Text>
 
-          <StyledInput
+          <PasswordInput
             value={checkPassword}
             setValue={setCheckPassword}
             placeholder="Ваш пароль...."

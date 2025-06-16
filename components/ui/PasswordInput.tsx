@@ -5,7 +5,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 interface Props extends StyledInputProps {}
 
-export const PasswordInput = ({ value, setValue, style }: Props) => {
+export const PasswordInput = ({
+  value,
+  setValue,
+  style,
+  placeholder,
+}: Props) => {
   const [isSecurity, setIsSecurity] = useState(true);
 
   const toggleSecurityPassword = () => {
@@ -18,6 +23,7 @@ export const PasswordInput = ({ value, setValue, style }: Props) => {
         value={value}
         setValue={setValue}
         secureTextEntry={isSecurity}
+        placeholder={placeholder}
         style={[{ paddingRight: 50 }, style]}
       />
 

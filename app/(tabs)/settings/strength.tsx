@@ -14,7 +14,7 @@ import {
   View,
 } from "react-native";
 import { PasswordRules } from "@/lib/validatePassword";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { DEFAULT_CONFIG_VALIDATE_PASSWORD } from "@/constants/ConfigValidatePassword";
 import { Toast } from "toastify-react-native";
 import * as SecureStore from "expo-secure-store";
@@ -32,6 +32,8 @@ export default function PasswordStrength() {
   >();
 
   const [passwordLength, setPasswordLength] = useState<string>("");
+
+  const router = useRouter();
 
   const loadConfigValidatePassword = () => {
     const configValidatePassword = SecureStore.getItem("ValidateConfig");
@@ -84,7 +86,13 @@ export default function PasswordStrength() {
     try {
       SecureStore.setItem("ValidateConfig", JSON.stringify(data));
 
-      Alert.alert("Успішно!");
+      Toast.show({
+        text1: "Успішно!",
+        text2: "Ваші правила були успішно збережені",
+        type: "success",
+      });
+
+      return router.push("./");
     } catch (error) {
       console.error(error);
     }
